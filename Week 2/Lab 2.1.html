@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <div> <!--Meta-->
+            <meta charset="UTF-8">
+        <meta name="description" content="Data Visualisation"/>
+        <meta name="LAB 2 D3 Drawing with data" content="Demo">
+        <meta name="keywords" content="HTML, CSS, D3">
+        <meta name="author" content="Anh Vu Le">
+
+        </div>
+        
+    <title>
+        Task 2.1 D3 Data Binding
+    </title>
+
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+
+    </head>
+    <body>
+
+        <h1>The D3 Journey starts here...</h1>
+
+        <p class="paragraph1">New paragraph!</p>
+
+        <script>
+            var numArray = [14,5,26,23,9];
+
+ 
+            var li = d3.select('body').selectAll('.paragraph1')
+                .data(numArray)
+                .style("color", function(d){ if (d>10){ return "red"}})
+                .text(function(d){ if (d>10) {
+                    return'Warning: Vu watched '+d+' cat videos today.'
+                }        
+                else {
+                    return 'Vu watched '+d +' cat videos today.'}
+                })
+
+                li.enter().append('p')
+                .style("color", function(d){ if (d>10){ return "red"}})
+                .text(function(d){ if (d>10) {
+                    return'Warning: Vu watched '+d+' cat videos today.'
+                } else {
+                    return 'Vu watched '+d +' cat videos today.'}
+                });
+                
+                li.exit().remove();
+                
+                
+        </script>
+        <hr>
+        <footer style="color:aqua">COS30045 Data Visualisation
+            <br>Anh Vu Le</footer>
+    </body>
+</html>

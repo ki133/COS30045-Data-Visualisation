@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Vis">
+    <meta name="keywords" content="HTML, CSS, D3">
+    <meta name="author" content="Anh Vu LE">
+    <title>LAB 7.1 D3 Line and Area Charts</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+        
+        .halfMilMark {
+            stroke: red;
+            stroke-width: 1px;
+            stroke-dasharray: 5;
+        }
+        
+        .area {
+            fill: steelblue;
+            opacity: 1; 
+        }
+
+        svg {
+            margin-left: 50px; 
+        }
+
+        .axis-label {
+            font-size: 9px;
+            fill: black; 
+        }
+
+        .halfMilLabel {
+            font-size: 12px;
+            fill: red; 
+        }
+    </style>
+</head>
+<body>
+<h1>Number of Unemployed in Australia</h1>
+
+<div id="chart"></div>
+
+<script>
+    function init() {
+        var w = 600;
+        var h = 300;
+        var padding = 50;
+        var dataset;
+
+        d3.csv("Unemployment_78-95.csv", function(d) {
+            return {
+                date: new Date(+d.year, +d.month - 1),
+                number: +d.number
+            };
+        }).then(function(data) {
+            dataset = data;
+            drawChart(dataset, w, h, padding);
+        });
+    }
+
+    function drawChart(dataset, w, h, padding) {
+        var xScale = d3.scaleTime()
+            .domain([
+                d3.min(dataset, function(d) { return d.date; }),
+                d3.max(dataset, function(d) { return d.date; })
+            ])
+            .range([padding, w - padding]);
+
+        var yScale = d3.scaleLinear()
+            .domain([0, d3.max(dataset, function(d) { return d.number; })])
+            .range([h - padding, padding]);
+
+        var line = d3.line()
+            .x(function(d) { return xScale(d.date); })
+            .y(function(d) { return yScale(d.number); });
+
+        var area = d3.area()
+            .x(function(d) { return xScale(d.date); })
+            .y0(h - padding)
+            .y1(function(d) { return yScale(d.number); });
+
+        var svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+        svg.append("path")
+            .datum(dataset)
+            .attr("class", "area")
+            .attr("d", area);
+
+        svg.append("path")
+            .datum(dataset)
+            .attr("class", "line")
+            .attr("d", line);
+
+        svg.append("g")
+            .attr("transform", "translate(0," + (h - padding) + ")")
+            .call(d3.axisBottom(xScale))
+            .selectAll(".tick text") 
+            .attr("class", "axis-label"); 
+
+        svg.append("g")
+            .attr("transform", "translate(" + padding + ",0)")
+            .call(d3.axisLeft(yScale))
+            .selectAll(".tick text") 
+            .attr("class", "axis-label"); 
+
+        svg.append("line")
+            .attr("class", "halfMilMark")
+            .attr("x1", padding)
+            .attr("y1", yScale(500000))
+            .attr("x2", w)
+            .attr("y2", yScale(500000));
+        
+        svg.append("text")
+            .attr("class", "halfMilLabel")
+            .attr("x", padding + 10)
+            .attr("y", yScale(500000) - 7)
+            .text("Half a million unemployed");
+    }
+
+    init(); 
+
+</script>
+
+<hr> 
+<footer style="color: blue; text-align: center; margin-top: 20px; font-size: 20px;">COS30045 Data Visualisation<br>Anh Vu Le</footer>
+</body>
+</html>

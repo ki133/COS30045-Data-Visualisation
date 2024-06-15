@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <div><!--style-->
+        <style>
+            body {
+              background-color: grey;
+            }
+            
+            h1 {
+              color: white;
+              text-align: center;
+            }
+            
+            p {
+              font-family: verdana;
+              font-size: 14px;
+            }
+            </style>
+    
+    </div>
+    <!--<script>
+        function click() {
+            let counter = 0;
+
+        }
+    </script>-->
+    <script>
+function both1() {
+            document.getElementById("2019").style.display = "";
+        }
+        function both2() {
+            document.getElementById("2021").style.display = "";
+        }
+        function both3() {
+            document.getElementById("both").style.display = "";
+        }
+
+    </script>
+    <title>
+        LAB 1.1 HTML and CSS Review
+    </title>
+    <meta charset="UTF-8">
+  <meta name="LAB 1.1 HTML and CSS Review" content="Demo">
+  <meta name="keywords" content="HTML, CSS">
+  <meta name="author" content="Anh Vu Le">
+</head>
+<body>
+
+    <div><!--heading-->
+        <h1>
+            Pets and the Pandemic
+          </h1>
+          <br>
+        <p>
+          <ul>
+            A report from Animal Medicines Australia (AMA) has found that many Australians took the opportunity to introduce a pet into their household during the pandemic. Their survey indicated that there was a significant increase in the percent of households taking in a new dog, fish or bird. Their research also indicated that pets had a number of positive influences on their lives such as:
+          </ul>
+        </p>
+          
+        <li>
+            companionship
+        </li>
+        <li>
+            better mental health
+        </li>
+        <li>
+            joy and happiness.
+        </li>
+    </div>
+
+    <div> 
+        <img id="2019" src="Pets2019.png" style="display: none;" width="400" height="400"/>
+    <input type="submit" id="2019" value="2019" onclick="both1()"/>
+    <img id="2021" src="Pets2021.png" style="display: none;" width="400" height="400"/>
+    <input type="submit" id="2021" value="2021" onclick="both2()"/>
+    <img id="both" src="Both.png" style="display: none;" width="400" height="400"/>
+    <input type="submit" id="both" value="Both" onclick="both3()"/>
+        
+    <br>
+<div>
+<!---<img src="pet_ownership_in_australia_table.png" alt="pet_ownership_in_australia_table" width="500" height="333">
+
+<p>
+    Fig 1. Comparision of Pet Ownership in 2019 and 2021. Data source: <a href=" https://animalmedicinesaustralia.org.au/wp-content/uploads/2021/08/AMAU005-PATP-Report21_v1.41_WEB.pdf">Animal Medicines Australian Report</a>
+</p>
+    </div>
+-->
+</div>
+<div><!--last para-->
+    <p>
+        With the <b>increase</b> in pet ownership the AMA are encouraging policy makers to consider the needs of companion animals and their owners when considering <i>rental, strata and body</i> corporate regulations are well as accepting animals in public places and transport.
+    </p>
+    
+
+</div>
+<hr>
+<div>
+    <h1>Drawing with SVG</h1>
+    <svg width="500" height="200">
+        <circle cx="50" cy="50" r="40" stroke="yellow" stroke-width="1" fill="red" />
+		<rect width="100" height="80" x="90" y="10" rx="20" ry="20" fill="blue" />
+		<polygon points="220,10 260,90 180,90" style="fill:lime;stroke:purple;stroke-width:1" />
+		<line x1="0" y1="50" x2="260" y2="50" style="stroke:black;stroke-width:4" />
+     </svg> 
+     
+
+</div>
+<hr>
+<div> <!--footer-->
+    <footer>
+        <p> COS30045 Data Visualisation<br>
+            Author: Anh Vu Le<br>
+            <a href="104653505@student.swin.edu.au">104653505@student.swin.edu.au</a></p>
+    </footer>
+</div>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Vis" />
+    <meta name="keywords" content="HTML, CSS, D3" />
+    <meta name="author" content="Anh Vu LE">
+
+    <title>Task 5.1 D3 Updates</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        #updateData {
+            position: absolute;
+            top: 80px;
+            left: 10px; 
+            background-color: blue; 
+            color: white;
+            padding: 8px 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .axis-text {
+            font-size: 10px;
+        }
+
+        .data-label {
+            font-size: 15px;
+            fill: black;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>The D3 Journey starts here...</h1>
+    <button id="updateData">Update Data</button>
+
+    <script>
+
+        var w = 500;
+        var h = 300; 
+        var dataset = [14, 5, 26, 23, 9, 10, 32, 18];
+        var maxValue = 25; 
+        
+        function generateRandomData() {
+            var newData = [];
+            for (var i = 0; i < dataset.length; i++) {
+                newData.push(Math.floor(Math.random() * (maxValue + 1)));
+            }
+            return newData;
+        }
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('width', w)
+            .attr('height', h);
+
+        var xScale = d3.scaleBand()
+            .domain(d3.range(dataset.length))
+            .range([0, w])
+            .paddingInner(0.05); 
+        
+        var yScale = d3.scaleLinear()
+            .domain([0, d3.max(dataset)])
+            .range([h, 0]);
+
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
+
+        svg.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", "translate(0," + h + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y-axis")
+            .call(yAxis)
+            .selectAll(".tick text")
+            .attr("class", "axis-text"); 
+
+        function updateChart(newData) {
+            var rects = svg.selectAll('rect')
+                .data(newData);
+
+            rects.enter()
+                .append('rect')
+                .merge(rects)
+                .transition() 
+                .duration(2000) 
+                .ease(d3.easeCircleOut)          
+                .attr('x', function (d, i) {
+                    return xScale(i);
+                })
+                .attr('height', function (d) {
+                    return h - yScale(d);
+                })
+                .attr('y', function (d) { 
+                    return yScale(d); 
+                })
+                .attr('width', xScale.bandwidth())
+                .style("fill", d3.color("blue")); 
+
+            svg.selectAll(".data-label").remove(); 
+            svg.selectAll(".data-label")
+                .data(newData)
+                .enter()
+                .append("text")
+                .attr("class", "data-label")
+                .attr("x", function(d, i) {
+                    return xScale(i) + xScale.bandwidth() / 2;
+                })
+                .attr("y", function(d) {
+                    return yScale(d) + 15; 
+                })
+                .text(function(d) {
+                    return d;
+                });
+        }
+
+        updateChart(dataset);
+
+        d3.select("#updateData").on("click", function() {
+            var newData = generateRandomData();
+            updateChart(newData);
+        });
+    </script>
+    <hr> 
+    <footer style="color: blue green; text-align: center; margin-top: 20px;font-size: 25px;">COS30045 Data Visualisation<br>Anh Vu Le</footer>
+</body>
+</html>

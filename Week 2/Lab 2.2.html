@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Vis" />
+    <meta name="keywords" content="HTML, CSS, D3" />
+    <meta name="author" content="Anh Vu LE">
+
+    <title>Task 2.2 D3 Drawing with Data</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <h1>The D3 Journey starts here...</h1>
+    <!-- Add a button for updating data -->
+    <button id="updateData">Update Data</button>
+
+    <script>
+
+        var w = 500;
+        var h = 300; // Increase height to accommodate y-axis and labels
+        var dataset = [14, 5, 26, 23, 9, 10, 32, 18];
+        
+        // Function to generate random dataset
+        function generateRandomData() {
+            var newData = [];
+            var maxValue = 25; // Set maximum value
+            for (var i = 0; i < dataset.length; i++) {
+                newData.push(Math.floor(Math.random() * (maxValue + 1)));
+            }
+            return newData;
+        }
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('width', w)
+            .attr('height', h);
+
+        // Function to update the chart
+        function updateChart(newData) {
+            var rects = svg.selectAll('rect')
+                .data(newData);
+
+            rects.enter()
+                .append('rect')
+                .merge(rects)
+                .attr('x', function (d, i) {
+                    return i * (w / newData.length); // Updated to scale with dataset length
+                })
+                .attr('height', function (d) {
+                    return d * 4;
+                })
+                .attr('y', function (d) { 
+                    return h - d * 4; 
+                })
+                .attr('width', w / newData.length - 1) // Subtract 1 for padding
+                .style("fill", d3.color("blue")); // Changed fill color
+
+            rects.exit().remove();
+        }
+
+        // Initial chart rendering
+        updateChart(dataset);
+
+        // Event listener for button click to update data
+        d3.select("#updateData").on("click", function() {
+            var newData = generateRandomData();
+            updateChart(newData);
+        });
+    </script>
+    <hr> 
+    <footer style="color: blue green; text-align: center; margin-top: 20px;font-size: 25px;">COS30045 Data Visualisation<br>Anh Vu Le</footer>
+    </script>
+</body>
+</html>

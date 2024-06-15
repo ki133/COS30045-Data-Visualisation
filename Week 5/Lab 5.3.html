@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="description" content="Data Vis" />
+    <meta name="keywords" content="HTML, CSS, D3" />
+    <meta name="author" content="Anh Vu LE">
+
+    <title>Task 5.3 D3 Adding and Removing Data</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .action-btn {
+            position: absolute;
+            top: 80px;
+            background-color: cyan; 
+            color: black;
+            padding: 8px 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        #addData {
+            left: 10px;
+        }
+
+        #removeData {
+            left: 60px;
+        }
+
+        .axis-text {
+            font-size: 10px;
+        }
+        
+    </style>
+</head>
+
+<body>
+
+    <h1>The D3 Journey starts here...</h1>
+    <button class="action-btn" id="addData">Add</button>
+    <button class="action-btn" id="removeData">Remove</button>
+
+    <script>
+
+        var w = 500;
+        var h = 300; 
+        var dataset = [14, 5, 26, 23, 9, 10, 32, 18];
+        var maxValue = 25; 
+        
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('width', w)
+            .attr('height', h);
+
+        var xScale = d3.scaleBand()
+            .domain(d3.range(dataset.length))
+            .range([0, w])
+            .paddingInner(0.05); 
+        
+        var yScale = d3.scaleLinear()
+            .domain([0, d3.max(dataset)])
+            .range([h, 0]);
+
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
+
+        svg.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", "translate(0," + h + ")")
+            .call(xAxis);
+
+        svg.append("g")
+            .attr("class", "y-axis")
+            .call(yAxis)
+            .selectAll(".tick text")
+            .attr("class", "axis-text"); 
+
+        function updateChart() {
+            var bars = svg.selectAll('rect')
+                .data(dataset);
+
+            bars.exit()
+                .transition()
+                .delay(200)
+                .duration(500)
+                .attr('height', 0)
+                .remove();
+
+            bars.enter()
+                .append('rect')
+                .merge(bars)
+                .transition()
+                .delay(200)
+                .duration(500)
+                .attr('x', function (d, i) {
+                    return xScale(i);
+                })
+                .attr('height', function (d) {
+                    return h - yScale(d);
+                })
+                .attr('y', function (d) { 
+                    return yScale(d); 
+                })
+                .attr('width', xScale.bandwidth())
+                .style("fill", "grey");
+        }
+
+        updateChart();
+
+        d3.select("#addData").on("click", function() {
+            var newDatum = Math.floor(Math.random() * (maxValue + 1));
+            dataset.push(newDatum);
+            xScale.domain(d3.range(dataset.length));
+            updateChart();
+        });
+
+        d3.select("#removeData").on("click", function() {
+            dataset.pop();
+            xScale.domain(d3.range(dataset.length));
+            updateChart();
+        });
+
+    </script>
+    <hr> 
+    <footer style="color: blue green; text-align: center; margin-top: 20px;font-size: 25px;">COS30045 Data Visualisation<br>Anh Vu Le</footer>
+</body>
+</html>
